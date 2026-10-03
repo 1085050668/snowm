@@ -1,0 +1,121 @@
+-- ============================================================
+-- WindUI 加载
+-- ============================================================
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+
+local Window = WindUI:CreateWindow({
+    Title = "Ohio 美化",
+    Author = "Footagesus",
+    Folder = "ohio_skin",
+    Size = UDim2.fromOffset(580, 460),
+    Transparent = true,
+    Theme = "Dark",
+    Resizable = true,
+})
+
+local Tab = Window:Tab({
+    Title = "皮肤设置",
+    Icon = "palette",
+})
+
+-- ============================================================
+-- 全局变量
+-- ============================================================
+local skinsec = "Sparkler"
+local autoskin = false
+
+-- ============================================================
+-- 皮肤下拉菜单
+-- ============================================================
+Tab:Dropdown({
+    Title = "选择一个皮肤",
+    Values = {
+        "烟火", "虚空", "纯金", "暗物质", "反物质", "神秘", "虚空神秘", "战术", "纯金战术",
+        "白未来", "黑未来", "圣诞未来", "礼物包装", "猩红", "收割者", "虚空收割者", "圣诞玩具",
+        "荒地", "隐形", "像素", "钻石像素", "黄金零下", "绿水晶", "生物", "樱花", "精英",
+        "黑樱花", "彩虹激光", "蓝水晶", "紫水晶", "红水晶", "零下", "虚空射线", "冰冻钻石",
+        "虚空梦魇", "金雪", "爱国者", "MM2", "声望", "酷化", "蒸汽", "海盗", "玫瑰", "黑玫瑰",
+        "激光", "烟花", "诅咒背瓜", "大炮", "财富", "黄金大炮", "四叶草", "自由", "黑曜石", "赛博朋克"
+    },
+    Value = "烟火",
+    Callback = function(Value)
+        local skinMap = {
+            ["烟火"] = "Sparkler",
+            ["虚空"] = "Void",
+            ["纯金"] = "Solid Gold",
+            ["暗物质"] = "Dark Matter",
+            ["反物质"] = "Anti Matter",
+            ["神秘"] = "Hystic",
+            ["虚空神秘"] = "Void Mystic",
+            ["战术"] = "Tactical",
+            ["纯金战术"] = "Solid Gold Tactical",
+            ["白未来"] = "Future White",
+            ["黑未来"] = "Future Black",
+            ["圣诞未来"] = "Christmas Future",
+            ["礼物包装"] = "Gift Wrapped",
+            ["猩红"] = "Crimson Blood",
+            ["收割者"] = "Reaper",
+            ["虚空收割者"] = "Void Reaper",
+            ["圣诞玩具"] = "Christmas Toy",
+            ["荒地"] = "Wasteland",
+            ["隐形"] = "Invisible",
+            ["像素"] = "Pixel",
+            ["钻石像素"] = "Diamond Pixel",
+            ["黄金零下"] = "Frozen-Gold",
+            ["绿水晶"] = "Atomic Nature",
+            ["生物"] = "Biohazard",
+            ["樱花"] = "Sakura",
+            ["精英"] = "Elite",
+            ["黑樱花"] = "Death Blossom-Gold",
+            ["彩虹激光"] = "Rainbowlaser",
+            ["蓝水晶"] = "Atomic Water",
+            ["紫水晶"] = "Atomic Amethyst",
+            ["红水晶"] = "Atomic Flame",
+            ["零下"] = "Sub-Zero",
+            ["虚空射线"] = "Void-Ray",
+            ["冰冻钻石"] = "Frozen Diamond",
+            ["虚空梦魇"] = "Void Nightmare",
+            ["金雪"] = "Golden Snow",
+            ["爱国者"] = "Patriot",
+            ["MM2"] = "MM2 Barrett",
+            ["声望"] = "Prestige Barnett",
+            ["酷化"] = "Skin Walter",
+            ["蒸汽"] = "Steampunk",
+            ["海盗"] = "Pirate",
+            ["玫瑰"] = "Rose",
+            ["黑玫瑰"] = "Black Rose",
+            ["激光"] = "Hyperlaser",
+            ["烟花"] = "Firework",
+            ["诅咒背瓜"] = "Cursed Pumpkin",
+            ["大炮"] = "Cannon",
+            ["财富"] = "Firework",
+            ["黄金大炮"] = "Gold Cannon",
+            ["四叶草"] = "Lucky Clover",
+            ["自由"] = "Freedom",
+            ["黑曜石"] = "Obsidian",
+            ["赛博朋克"] = "Cyberpunk",
+        }
+        skinsec = skinMap[Value]
+    end
+})
+
+-- ============================================================
+-- 开启美化开关
+-- ============================================================
+Tab:Toggle({
+    Title = "开启美化",
+    Desc = "应用选中的皮肤到所有枪支",
+    Value = false,
+    Callback = function(state)
+        autoskin = state
+        if autoskin then
+            local it = require(game:GetService("ReplicatedStorage").devv).load("v3item").inventory
+            local b1 = require(game:GetService("ReplicatedStorage").devv).load("v3item").inventory.items
+            for _, item in next, b1 do
+                if item.type == "Gun" then
+                    it.skinUpdate(item.name, skinsec)
+                end
+            end
+        end
+    end
+})
